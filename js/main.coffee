@@ -29,7 +29,9 @@ flakes.push(createFlake()) for i in [0..30]
 
 moveFlakes = ->
 	
-	for flake in flakes
+	$.each flakes, ->
+		
+		flake = @
 		
 		pos = flake.position()
 		

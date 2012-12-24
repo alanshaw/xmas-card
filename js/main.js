@@ -36,13 +36,13 @@
   }
 
   moveFlakes = function() {
-    var flake, newTop, pos, _j, _len;
-    for (_j = 0, _len = flakes.length; _j < _len; _j++) {
-      flake = flakes[_j];
+    $.each(flakes, function() {
+      var flake, newTop, pos;
+      flake = this;
       pos = flake.position();
       newTop = pos.top < winHeight ? pos.top + 1 : 0;
       if (newTop !== 0) {
-        flake.css({
+        return flake.css({
           top: newTop
         });
       } else {
@@ -50,11 +50,11 @@
           top: newTop,
           opacity: 0
         });
-        setTimeout((function() {
+        return setTimeout((function() {
           return flake.css('opacity', 0.5);
         }), 50);
       }
-    }
+    });
     return setTimeout(moveFlakes, 100);
   };
 
