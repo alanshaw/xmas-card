@@ -52,7 +52,7 @@
         });
         return setTimeout((function() {
           return flake.css('opacity', 0.5);
-        }), 50);
+        }), 250);
       }
     });
     return setTimeout(moveFlakes, 100);

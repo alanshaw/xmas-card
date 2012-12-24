@@ -41,7 +41,7 @@ moveFlakes = ->
 			flake.css top: newTop
 		else
 			flake.css top: newTop, opacity: 0
-			setTimeout (-> flake.css('opacity', 0.5)), 50
+			setTimeout (-> flake.css('opacity', 0.5)), 250
 	
 	setTimeout moveFlakes, 100
 
