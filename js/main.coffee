@@ -9,13 +9,17 @@ delay = 0
 flakes = []
 
 createFlake = -> 
-	flake = $('<div class="snowflake" data-size="' + Math.floor(Math.random() * 4) + '">*</div>')
+	flake = $('<div class="snowflake" data-size="' + (Math.floor(Math.random() * 4) + 1) + '">*</div>')
+	
+	top = Math.floor(Math.random() * winHeight)
 	
 	flake.css
 		position: 'absolute'
-		top: Math.floor(Math.random() * winHeight)
+		top: top
 		left: Math.floor(Math.random() * winWidth)
 		opacity: 0
+	
+	flake.data 'top', top
 	
 	main.append flake
 	
@@ -33,15 +37,15 @@ moveFlakes = ->
 		
 		flake = @
 		
-		pos = flake.position()
+		top = flake.data 'top'
 		
-		newTop = if(pos.top < winHeight) then pos.top + 1 else 0
+		newTop = if top < winHeight then parseInt(top) + 1 else 0 - parseInt(flake.data('size')) * 16
 		
-		if(newTop isnt 0)
-			flake.css top: newTop
-		else
-			flake.css top: newTop, opacity: 0
-			setTimeout (-> flake.css('opacity', 0.5)), 250
+		flake.css(top: newTop).data(top: newTop)
+		
+		if top >= winHeight
+			flake.css opacity: 0
+			setTimeout (-> flake.css('opacity', 0.5)), 5000
 	
 	setTimeout moveFlakes, 100
 
