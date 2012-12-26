@@ -2,17 +2,22 @@ win = $ window
 winWidth = win.width()
 winHeight = win.height()
 
+unicodeFlakes = ['&#x2744', '&#x2745', '&#x2746']
 delay = 0
 
 createFlake = (container) -> 
 	
-	flake = $ '<div class="snowflake" data-size="' + (Math.floor(Math.random() * 4) + 1) + '">*</div>' 
+	unicodeFlake = unicodeFlakes[Math.floor(Math.random() * unicodeFlakes.length)]
+	
+	flake = $ '<div class="snowflake" data-size="' + (Math.floor(Math.random() * 4) + 1) + '">' + unicodeFlake + '</div>' 
 	
 	flake.css
 		position: 'absolute'
 		top: Math.floor(Math.random() * winHeight)
 		left: Math.floor(Math.random() * winWidth)
 		opacity: 0
+		# Reinstate when Firefox doesn't freak out
+		#transform: "rotate(#{Math.floor(Math.random() * 360)}deg)"
 	
 	container.append flake
 	
