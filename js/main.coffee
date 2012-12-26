@@ -1,52 +1,54 @@
-main = $ '#main'
-
 win = $ window
 winWidth = win.width()
 winHeight = win.height()
 
 delay = 0
 
-flakes = []
-
-createFlake = -> 
-	flake = $('<div class="snowflake" data-size="' + (Math.floor(Math.random() * 4) + 1) + '">*</div>')
+createFlake = (container) -> 
 	
-	top = Math.floor(Math.random() * winHeight)
+	flake = $ '<div class="snowflake" data-size="' + (Math.floor(Math.random() * 4) + 1) + '">*</div>' 
 	
 	flake.css
 		position: 'absolute'
-		top: top
+		top: Math.floor(Math.random() * winHeight)
 		left: Math.floor(Math.random() * winWidth)
 		opacity: 0
 	
-	flake.data 'top', top
-	
-	main.append flake
+	container.append flake
 	
 	delay += 100
 	
 	setTimeout (-> flake.css('opacity', 0.5)), delay
-	
-	flake
 
-flakes.push(createFlake()) for i in [0..30]
+createContainer = -> $ '<div class="snowflakes"/>'
 
-moveFlakes = ->
-	
-	$.each flakes, ->
-		
-		flake = @
-		
-		top = flake.data 'top'
-		
-		newTop = if top < winHeight then parseInt(top) + 1 else 0 - parseInt(flake.data('size')) * 16
-		
-		flake.css(top: newTop).data(top: newTop)
-		
-		if top >= winHeight
-			flake.css opacity: 0
-			setTimeout (-> flake.css('opacity', 0.5)), 5000
-	
-	setTimeout moveFlakes, 100
+containers = [createContainer(), createContainer()]
+containerTop = 0
 
-moveFlakes()
+main = $ '#main'
+
+for container in containers
+	
+	container.css
+		position: 'absolute'
+		top: containerTop
+		left: 0
+		width: winWidth,
+		height: winHeight
+	
+	containerTop -= winHeight
+	
+	createFlake(container) for i in [0..30]
+	
+	main.append container
+
+(moveContainers = ->
+	
+	for container in containers
+		
+		currentTop = parseInt(container.css 'top')
+		
+		container.css(top: (if currentTop >= winHeight then -winHeight else currentTop + 1))
+	
+	setTimeout moveContainers, 100
+)()
